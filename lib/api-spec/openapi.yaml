@@ -3,20 +3,31 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Global Scholar & Migration Guide API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: opportunities
+    description: Scholarship & migration opportunities
+  - name: countries
+    description: Country directory
+  - name: stats
+    description: Statistics & aggregates
+  - name: applications
+    description: User application tracking
+  - name: ads
+    description: Ad placement tracking
+  - name: openai
+    description: OpenAI ScholarBot
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +35,626 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /opportunities:
+    get:
+      operationId: listOpportunities
+      tags: [opportunities]
+      summary: List & search opportunities
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+        - in: query
+          name: type
+          schema: { type: string, enum: [scholarship, migration, all] }
+        - in: query
+          name: countryCode
+          schema: { type: string }
+        - in: query
+          name: field
+          schema: { type: string }
+        - in: query
+          name: degreeLevel
+          schema: { type: string }
+        - in: query
+          name: funding
+          schema: { type: string }
+        - in: query
+          name: featured
+          schema: { type: boolean }
+        - in: query
+          name: sort
+          schema: { type: string, enum: [deadline, newest, popular, match] }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: pageSize
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: Paginated results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpportunityList"
+
+  /opportunities/{id}:
+    get:
+      operationId: getOpportunity
+      tags: [opportunities]
+      summary: Opportunity details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Opportunity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Opportunity"
+        "404":
+          description: Not found
+
+  /opportunities/featured:
+    get:
+      operationId: listFeaturedOpportunities
+      tags: [opportunities]
+      summary: Featured / sponsored opportunities
+      responses:
+        "200":
+          description: Featured opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Opportunity"
+
+  /opportunities/recommended:
+    get:
+      operationId: listRecommendedOpportunities
+      tags: [opportunities]
+      summary: AI-style recommended opportunities
+      parameters:
+        - in: query
+          name: interests
+          schema: { type: string }
+      responses:
+        "200":
+          description: Recommended opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Opportunity"
+
+  /opportunities/deadlines:
+    get:
+      operationId: listUpcomingDeadlines
+      tags: [opportunities]
+      summary: Upcoming deadlines
+      responses:
+        "200":
+          description: Deadlines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Opportunity"
+
+  /countries:
+    get:
+      operationId: listCountries
+      tags: [countries]
+      summary: List all countries with stats
+      responses:
+        "200":
+          description: Countries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Country"
+
+  /countries/{code}:
+    get:
+      operationId: getCountry
+      tags: [countries]
+      summary: Country details with opportunities
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Country detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryDetail"
+
+  /stats/overview:
+    get:
+      operationId: getStatsOverview
+      tags: [stats]
+      summary: Platform overview stats
+      responses:
+        "200":
+          description: Overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsOverview"
+
+  /stats/by-type:
+    get:
+      operationId: getStatsByType
+      tags: [stats]
+      summary: Counts grouped by opportunity type
+      responses:
+        "200":
+          description: Counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TypeBucket"
+
+  /stats/top-countries:
+    get:
+      operationId: getTopCountries
+      tags: [stats]
+      summary: Top countries by opportunities
+      responses:
+        "200":
+          description: Top countries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryStat"
+
+  /applications:
+    get:
+      operationId: listApplications
+      tags: [applications]
+      summary: List user applications (guest mode = local id)
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+    post:
+      operationId: createApplication
+      tags: [applications]
+      summary: Track a new application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateApplicationBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Application"
+
+  /applications/{id}:
+    patch:
+      operationId: updateApplication
+      tags: [applications]
+      summary: Update application status / notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateApplicationBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Application"
+    delete:
+      operationId: deleteApplication
+      tags: [applications]
+      summary: Delete an application
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /ads/track:
+    post:
+      operationId: trackAdEvent
+      tags: [ads]
+      summary: Track an ad impression / click
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackAdEventBody"
+      responses:
+        "200":
+          description: Tracked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdTrackResponse"
+
+  /ads/stats:
+    get:
+      operationId: getAdStats
+      tags: [ads]
+      summary: Aggregated ad stats
+      responses:
+        "200":
+          description: Ad stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdStat"
+
+  /openai/conversations:
+    post:
+      operationId: createOpenaiConversation
+      tags: [openai]
+      summary: Create a new conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOpenaiConversationBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiConversation"
+
+  /openai/conversations/{id}:
+    get:
+      operationId: getOpenaiConversation
+      tags: [openai]
+      summary: Get conversation with messages
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiConversationWithMessages"
+
+  /openai/conversations/{id}/messages:
+    post:
+      operationId: sendOpenaiMessage
+      tags: [openai]
+      summary: Send message and stream reply (SSE)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendOpenaiMessageBody"
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream: {}
+
 components:
   schemas:
     HealthStatus:
       type: object
       properties:
-        status:
-          type: string
-      required:
-        - status
+        status: { type: string }
+      required: [status]
 
+    Opportunity:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        titleAr: { type: string }
+        type: { type: string, enum: [scholarship, migration] }
+        countryCode: { type: string }
+        countryName: { type: string }
+        countryNameAr: { type: string }
+        organization: { type: string }
+        degreeLevel: { type: string }
+        field: { type: string }
+        funding: { type: string }
+        amount: { type: string }
+        duration: { type: string }
+        deadline: { type: string }
+        description: { type: string }
+        eligibility: { type: string }
+        benefits:
+          type: array
+          items: { type: string }
+        requirements:
+          type: array
+          items: { type: string }
+        applicationUrl: { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        difficulty: { type: integer }
+        acceptanceRate: { type: integer }
+        featured: { type: boolean }
+        affiliateUrl: { type: string }
+        createdAt: { type: string, format: date-time }
+      required:
+        - id
+        - title
+        - titleAr
+        - type
+        - countryCode
+        - countryName
+        - countryNameAr
+        - organization
+        - degreeLevel
+        - field
+        - funding
+        - deadline
+        - description
+        - benefits
+        - requirements
+        - tags
+        - featured
+        - createdAt
+
+    OpportunityList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Opportunity"
+        total: { type: integer }
+        page: { type: integer }
+        pageSize: { type: integer }
+      required: [items, total, page, pageSize]
+
+    Country:
+      type: object
+      properties:
+        code: { type: string }
+        name: { type: string }
+        nameAr: { type: string }
+        flag: { type: string }
+        region: { type: string }
+        opportunityCount: { type: integer }
+        scholarshipCount: { type: integer }
+        migrationCount: { type: integer }
+        latitude: { type: number }
+        longitude: { type: number }
+      required:
+        - code
+        - name
+        - nameAr
+        - flag
+        - region
+        - opportunityCount
+        - scholarshipCount
+        - migrationCount
+
+    CountryDetail:
+      type: object
+      properties:
+        code: { type: string }
+        name: { type: string }
+        nameAr: { type: string }
+        flag: { type: string }
+        region: { type: string }
+        description: { type: string }
+        opportunities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Opportunity"
+        opportunityCount: { type: integer }
+        scholarshipCount: { type: integer }
+        migrationCount: { type: integer }
+      required:
+        - code
+        - name
+        - nameAr
+        - flag
+        - region
+        - description
+        - opportunities
+        - opportunityCount
+        - scholarshipCount
+        - migrationCount
+
+    StatsOverview:
+      type: object
+      properties:
+        totalOpportunities: { type: integer }
+        totalScholarships: { type: integer }
+        totalMigration: { type: integer }
+        totalCountries: { type: integer }
+        upcomingDeadlines: { type: integer }
+        featuredCount: { type: integer }
+      required:
+        - totalOpportunities
+        - totalScholarships
+        - totalMigration
+        - totalCountries
+        - upcomingDeadlines
+        - featuredCount
+
+    TypeBucket:
+      type: object
+      properties:
+        type: { type: string }
+        count: { type: integer }
+      required: [type, count]
+
+    CountryStat:
+      type: object
+      properties:
+        countryCode: { type: string }
+        countryName: { type: string }
+        countryNameAr: { type: string }
+        flag: { type: string }
+        count: { type: integer }
+      required: [countryCode, countryName, countryNameAr, flag, count]
+
+    Application:
+      type: object
+      properties:
+        id: { type: integer }
+        userId: { type: string }
+        opportunityId: { type: integer }
+        opportunityTitle: { type: string }
+        opportunityTitleAr: { type: string }
+        countryCode: { type: string }
+        countryName: { type: string }
+        countryNameAr: { type: string }
+        type: { type: string }
+        status: { type: string, enum: [planning, in_progress, submitted, accepted, rejected] }
+        notes: { type: string }
+        deadline: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required:
+        - id
+        - userId
+        - opportunityId
+        - opportunityTitle
+        - opportunityTitleAr
+        - countryCode
+        - countryName
+        - countryNameAr
+        - type
+        - status
+        - createdAt
+        - updatedAt
+
+    CreateApplicationBody:
+      type: object
+      properties:
+        userId: { type: string }
+        opportunityId: { type: integer }
+        status: { type: string }
+        notes: { type: string }
+      required: [userId, opportunityId]
+
+    UpdateApplicationBody:
+      type: object
+      properties:
+        status: { type: string }
+        notes: { type: string }
+
+    TrackAdEventBody:
+      type: object
+      properties:
+        slot: { type: string }
+        event: { type: string, enum: [impression, click] }
+      required: [slot, event]
+
+    AdTrackResponse:
+      type: object
+      properties:
+        ok: { type: boolean }
+      required: [ok]
+
+    AdStat:
+      type: object
+      properties:
+        slot: { type: string }
+        impressions: { type: integer }
+        clicks: { type: integer }
+      required: [slot, impressions, clicks]
+
+    OpenaiConversation:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        createdAt: { type: string, format: date-time }
+      required: [id, title, createdAt]
+
+    OpenaiMessage:
+      type: object
+      properties:
+        id: { type: integer }
+        conversationId: { type: integer }
+        role: { type: string }
+        content: { type: string }
+        createdAt: { type: string, format: date-time }
+      required: [id, conversationId, role, content, createdAt]
+
+    OpenaiConversationWithMessages:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        createdAt: { type: string, format: date-time }
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenaiMessage"
+      required: [id, title, createdAt, messages]
+
+    CreateOpenaiConversationBody:
+      type: object
+      properties:
+        title: { type: string }
+      required: [title]
+
+    SendOpenaiMessageBody:
+      type: object
+      properties:
+        content: { type: string }
+      required: [content]
