@@ -41,7 +41,7 @@ export default function Opportunities() {
   const [countryCode, setCountryCode] = useState<string>(initialCountry || "all");
   const [degreeLevel, setDegreeLevel] = useState<string>("all");
   const [funding, setFunding] = useState<string>("all");
-  const [sort, setSort] = useState<string>("featured");
+  const [sort, setSort] = useState<string>("deadline");
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const pageSize = 18;
@@ -73,7 +73,7 @@ export default function Opportunities() {
     setCountryCode("all");
     setDegreeLevel("all");
     setFunding("all");
-    setSort("featured");
+    setSort("deadline");
     setPage(1);
   };
 
@@ -122,7 +122,6 @@ export default function Opportunities() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="featured">{lang === "ar" ? "المميزة أولاً" : "Featured first"}</SelectItem>
                 <SelectItem value="deadline">{lang === "ar" ? "حسب الموعد النهائي" : "By deadline"}</SelectItem>
                 <SelectItem value="newest">{lang === "ar" ? "الأحدث" : "Newest"}</SelectItem>
                 <SelectItem value="popular">{lang === "ar" ? "الأكثر شعبية" : "Popular"}</SelectItem>
