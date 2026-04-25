@@ -103,7 +103,7 @@ router.get("/opportunities/recommended", async (req, res) => {
     const conds = interests.map((i) =>
       or(
         ilike(opportunitiesTable.field, `%${i}%`),
-        ilike(opportunitiesTable.tags as unknown as ReturnType<typeof sql>, `%${i}%`),
+        sql`${opportunitiesTable.tags}::text ilike ${"%" + i + "%"}`,
       ),
     );
     const items = await db

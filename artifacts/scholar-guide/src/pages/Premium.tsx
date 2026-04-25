@@ -4,34 +4,64 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Crown, Check, X, Sparkles, Bell, Bot, FileCheck, Map, Filter, Star } from "lucide-react";
+import {
+  Crown,
+  Check,
+  X,
+  Sparkles,
+  Bell,
+  Bot,
+  FileCheck,
+  Map,
+  Filter,
+  Star,
+  Calendar,
+  GraduationCap,
+  Search,
+  BookmarkPlus,
+} from "lucide-react";
 
-const FEATURES_AR = [
-  { icon: X, label: "إزالة جميع الإعلانات" },
-  { icon: Bot, label: "اقتراحات ذكية متقدمة من ScholarBot" },
+const FREE_AR = [
+  { icon: Search, label: "بحث متقدم في كل الفرص (4,500+ منحة وبرنامج)" },
+  { icon: GraduationCap, label: "كل المنح وبرامج الهجرة في 191 دولة" },
+  { icon: BookmarkPlus, label: "تتبع غير محدود لطلباتك" },
+  { icon: Bot, label: "ScholarBot الذكي للأسئلة والاقتراحات" },
   { icon: FileCheck, label: "مراجعة المستندات بالذكاء الاصطناعي" },
-  { icon: Bell, label: "إشعارات فورية وتذكيرات للمواعيد" },
-  { icon: Filter, label: "فلاتر بحث متقدمة (التمويل، نسبة القبول، المنح القديمة)" },
-  { icon: Map, label: "خريطة تفاعلية متقدمة بكل التفاصيل" },
-  { icon: Star, label: "أولوية في عرض الفرص الجديدة قبل الجميع" },
-  { icon: Sparkles, label: "تحليلات شخصية لمسارك ومقترحات بنسبة قبول عالية" },
+  { icon: Bell, label: "تذكيرات المواعيد النهائية" },
+  { icon: Calendar, label: "تقويم شخصي لكل المواعيد" },
+  { icon: Filter, label: "فلاتر متقدمة (التمويل، التخصص، الدولة، الدرجة)" },
 ];
 
-const FEATURES_EN = [
-  { icon: X, label: "Remove all ads" },
-  { icon: Bot, label: "Advanced ScholarBot suggestions" },
+const PREMIUM_AR = [
+  { icon: X, label: "إزالة جميع الإعلانات تماماً" },
+  { icon: Star, label: "وصول مبكر للفرص الجديدة قبل الجميع بـ48 ساعة" },
+  { icon: Sparkles, label: "تحليل ذكي لمسارك مع توصيات بنسبة قبول عالية" },
+  { icon: Map, label: "خريطة تفاعلية موسعة بإحصائيات كل دولة" },
+];
+
+const FREE_EN = [
+  { icon: Search, label: "Advanced search across all opportunities (4,500+)" },
+  { icon: GraduationCap, label: "All scholarships & migration programs in 191 countries" },
+  { icon: BookmarkPlus, label: "Unlimited application tracking" },
+  { icon: Bot, label: "ScholarBot AI assistant for questions and suggestions" },
   { icon: FileCheck, label: "AI document review" },
-  { icon: Bell, label: "Real-time alerts and deadline reminders" },
-  { icon: Filter, label: "Advanced search filters (funding, acceptance, archives)" },
-  { icon: Map, label: "Advanced interactive map with full details" },
-  { icon: Star, label: "Priority access to new opportunities" },
-  { icon: Sparkles, label: "Personal analytics and high-fit suggestions" },
+  { icon: Bell, label: "Deadline reminders" },
+  { icon: Calendar, label: "Personal calendar for all deadlines" },
+  { icon: Filter, label: "Advanced filters (funding, field, country, degree)" },
+];
+
+const PREMIUM_EN = [
+  { icon: X, label: "Remove all ads completely" },
+  { icon: Star, label: "Early access to new opportunities — 48 hours before everyone" },
+  { icon: Sparkles, label: "Smart path analysis with high-fit recommendations" },
+  { icon: Map, label: "Extended interactive map with full country stats" },
 ];
 
 export default function Premium() {
   const { lang } = useLang();
   const { isPremium, setPremium } = usePremium();
-  const features = lang === "ar" ? FEATURES_AR : FEATURES_EN;
+  const freeFeatures = lang === "ar" ? FREE_AR : FREE_EN;
+  const premiumFeatures = lang === "ar" ? PREMIUM_AR : PREMIUM_EN;
 
   return (
     <div className="container mx-auto px-4 py-10 max-w-4xl">
@@ -40,34 +70,32 @@ export default function Premium() {
           <Crown className="h-8 w-8" />
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
-          {lang === "ar" ? "افتح كامل قوة المنصة" : "Unlock the full platform"}
+          {lang === "ar" ? "كل المميزات المهمة مجاناً" : "All the essentials, free"}
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           {lang === "ar"
-            ? "النسخة المدفوعة تمنحك تجربة بدون إعلانات، أدوات ذكية متقدمة، وأولوية في كل شيء."
-            : "Premium gives you an ad-free experience, advanced AI tools, and priority access to everything."}
+            ? "النسخة المجانية قوية وكاملة. النسخة المدفوعة تضيف فقط بعض اللمسات الإضافية بسعر رمزي."
+            : "Our free tier is powerful and complete. Premium adds just a few extras at a symbolic price."}
         </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-10">
         <Card className="p-6 relative">
+          <Badge className="absolute -top-3 right-6 bg-primary text-primary-foreground">
+            {lang === "ar" ? "موصى به" : "Recommended"}
+          </Badge>
           <div className="text-xs font-bold text-muted-foreground mb-1 uppercase">{lang === "ar" ? "مجاني" : "Free"}</div>
           <div className="font-extrabold text-3xl mb-1">
             {lang === "ar" ? "0$" : "$0"}<span className="text-base font-normal text-muted-foreground">/{lang === "ar" ? "للأبد" : "forever"}</span>
           </div>
           <p className="text-sm text-muted-foreground mb-4">
-            {lang === "ar" ? "كل الأساسيات بشكل مجاني" : "All essentials for free"}
+            {lang === "ar" ? "كل ما تحتاجه فعلاً للنجاح" : "Everything you actually need to succeed"}
           </p>
-          <ul className="space-y-2 text-sm">
-            {[
-              lang === "ar" ? "بحث في كل الفرص" : "Browse all opportunities",
-              lang === "ar" ? "تتبع الطلبات" : "Application tracker",
-              lang === "ar" ? "ScholarBot الأساسي" : "Basic ScholarBot",
-              lang === "ar" ? "تنبيهات أسبوعية" : "Weekly digest",
-              lang === "ar" ? "إعلانات بسيطة" : "Light ads",
-            ].map((f) => (
-              <li key={f} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary" /> {f}
+          <ul className="space-y-2.5 text-sm">
+            {freeFeatures.map((f) => (
+              <li key={f.label} className="flex items-start gap-2">
+                <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span>{f.label}</span>
               </li>
             ))}
           </ul>
@@ -75,23 +103,23 @@ export default function Premium() {
 
         <Card className="p-6 relative bg-gradient-to-br from-accent/5 to-orange-50/50 dark:from-accent/15 dark:to-orange-950/30 border-accent/40 shadow-xl">
           <Badge className="absolute -top-3 right-6 bg-accent text-accent-foreground">
-            {lang === "ar" ? "الأكثر شعبية" : "Most Popular"}
+            {lang === "ar" ? "إزالة الإعلانات" : "Ad-Free"}
           </Badge>
           <div className="text-xs font-bold text-accent mb-1 uppercase flex items-center gap-1">
             <Crown className="h-3 w-3" />
             Premium
           </div>
           <div className="font-extrabold text-3xl mb-1">
-            {lang === "ar" ? "9.99$" : "$9.99"}<span className="text-base font-normal text-muted-foreground">/{lang === "ar" ? "شهرياً" : "month"}</span>
+            {lang === "ar" ? "2$" : "$2"}<span className="text-base font-normal text-muted-foreground">/{lang === "ar" ? "شهرياً" : "month"}</span>
           </div>
           <p className="text-sm text-muted-foreground mb-4">
-            {lang === "ar" ? "كل ما تحتاجه للنجاح" : "Everything you need to succeed"}
+            {lang === "ar" ? "كل ما في المجاني + لمسات إضافية" : "Everything in Free + a few extras"}
           </p>
-          <ul className="space-y-2 text-sm">
-            {features.map((f) => (
-              <li key={f.label} className="flex items-center gap-2">
-                <f.icon className="h-4 w-4 text-accent" />
-                {f.label}
+          <ul className="space-y-2.5 text-sm">
+            {premiumFeatures.map((f) => (
+              <li key={f.label} className="flex items-start gap-2">
+                <f.icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                <span>{f.label}</span>
               </li>
             ))}
           </ul>
@@ -120,7 +148,7 @@ export default function Premium() {
 
       <div className="text-center">
         <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-12">
-          {lang === "ar" ? "اشترك الآن" : "Subscribe Now"}
+          {lang === "ar" ? "اشترك بـ 2$ شهرياً" : "Subscribe for $2/month"}
         </Button>
         <p className="text-xs text-muted-foreground mt-3">
           {lang === "ar"

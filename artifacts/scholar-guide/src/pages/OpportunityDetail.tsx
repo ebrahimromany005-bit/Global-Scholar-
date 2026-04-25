@@ -20,7 +20,6 @@ import {
   BookmarkPlus,
   Calendar,
   CheckCircle2,
-  ExternalLink,
   GraduationCap,
   MapPin,
   Share2,
@@ -55,6 +54,11 @@ export default function OpportunityDetail() {
   const title = lang === "ar" ? o.titleAr : o.title;
   const country = lang === "ar" ? o.countryNameAr : o.countryName;
   const days = Math.ceil((new Date(o.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
+  const isFakeUrl = (url?: string) => !url || /example\.com|partner\.example/i.test(url);
+  const applyHref = isFakeUrl(o.applicationUrl)
+    ? `https://www.google.com/search?q=${encodeURIComponent(`${o.title} ${o.organization} official application`)}`
+    : o.applicationUrl;
 
   const onTrack = () => {
     createApp.mutate(
@@ -175,27 +179,24 @@ export default function OpportunityDetail() {
 
           <AdSlot slot="detail_inpage" size="inline" />
 
-          {o.affiliateUrl && (
-            <Card className="p-6 bg-gradient-to-br from-accent/10 to-amber-100/50 border-accent/30">
-              <div className="flex items-center gap-3 mb-2">
-                <Sparkles className="h-5 w-5 text-accent" />
-                <h3 className="font-bold">
-                  {lang === "ar" ? "تقديم مع شريك معتمد" : "Apply via partner"}
-                </h3>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {lang === "ar"
-                  ? "احصل على تجربة تقديم مدعومة من شريك موثوق مع متابعة شخصية."
-                  : "Get supported application experience with a trusted partner."}
-              </p>
-              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                <a href={o.affiliateUrl} target="_blank" rel="noopener noreferrer" className="gap-2">
-                  {lang === "ar" ? "تقديم مع الشريك" : "Apply with partner"}
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              </Button>
-            </Card>
-          )}
+          <Card className="p-6 bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/30">
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <h3 className="font-bold">
+                {lang === "ar" ? "كيف تقدم على هذه الفرصة" : "How to apply"}
+              </h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {lang === "ar"
+                ? "اضغط زر «قدم الآن» في الشريط الجانبي للوصول إلى صفحة التقديم الرسمية، أو احفظ الفرصة في طلباتك لمتابعتها لاحقاً."
+                : "Use the Apply Now button in the sidebar to reach the official application page, or save it to your tracker to follow up later."}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {lang === "ar"
+                ? "💡 نصيحة: تأكد من قراءة شروط الأهلية والمستندات المطلوبة قبل التقديم."
+                : "💡 Tip: review eligibility and required documents carefully before applying."}
+            </p>
+          </Card>
         </div>
 
         {/* Sidebar */}
@@ -238,14 +239,12 @@ export default function OpportunityDetail() {
             )}
 
             <div className="space-y-2">
-              {o.applicationUrl && (
-                <Button asChild className="w-full gap-2" size="lg">
-                  <a href={o.applicationUrl} target="_blank" rel="noopener noreferrer">
-                    {t("apply_now")}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                </Button>
-              )}
+              <Button asChild className="w-full gap-2" size="lg">
+                <a href={applyHref} target="_blank" rel="noopener noreferrer">
+                  {t("apply_now")}
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </Button>
               <Button onClick={onTrack} variant="outline" className="w-full gap-2">
                 <BookmarkPlus className="h-4 w-4" />
                 {t("track_application")}
