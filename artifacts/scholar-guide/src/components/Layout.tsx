@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'wouter';
 import { useLang } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
-import { Globe, Search, Home, LayoutList, Map, MessageSquare, Menu, X, BookOpen, Crown, FileText, Bell, User } from 'lucide-react';
+import { Globe, Search, Home, LayoutList, Map, MessageSquare, Menu, X, BookOpen, Crown, FileText, Bell, User, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { AdSlot } from './AdSlot';
 
@@ -16,6 +16,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: '/', label: t('home'), icon: Home },
     { href: '/opportunities', label: t('opportunities'), icon: Search },
     { href: '/countries', label: t('countries'), icon: Map },
+    { href: '/plan', label: t('smart_plan'), icon: Sparkles, highlight: true },
     { href: '/applications', label: t('tracker'), icon: LayoutList },
     { href: '/documents', label: t('documents'), icon: FileText },
     { href: '/learn', label: t('academy'), icon: BookOpen },
@@ -40,16 +41,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <nav className="hidden md:flex items-center gap-1 mx-6">
-            {navLinks.map(link => (
-              <Link key={link.href} href={link.href}>
-                <Button 
-                  variant={location === link.href ? 'secondary' : 'ghost'} 
-                  className={`text-sm font-medium ${location === link.href ? 'bg-secondary/20 text-secondary' : 'text-muted-foreground'}`}
-                >
-                  {link.label}
-                </Button>
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              const isActive = location === link.href;
+              const baseCls = 'text-sm font-medium gap-1.5';
+              const cls = link.highlight
+                ? `${baseCls} ${isActive ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground' : 'text-primary border border-primary/30 hover:bg-primary/10'}`
+                : `${baseCls} ${isActive ? 'bg-secondary/20 text-secondary' : 'text-muted-foreground'}`;
+              return (
+                <Link key={link.href} href={link.href}>
+                  <Button
+                    variant={isActive && !link.highlight ? 'secondary' : 'ghost'}
+                    className={cls}
+                  >
+                    {link.highlight && <link.icon className="h-3.5 w-3.5" />}
+                    {link.label}
+                  </Button>
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -125,6 +134,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {[
           { href: '/', icon: Home, label: t('home') },
           { href: '/opportunities', icon: Search, label: t('opportunities') },
+          { href: '/plan', icon: Sparkles, label: t('smart_plan') },
           { href: '/applications', icon: LayoutList, label: t('tracker') },
           { href: '/profile', icon: User, label: t('profile') },
         ].map(item => (

@@ -18,6 +18,7 @@ import Assistant from "@/pages/Assistant";
 import Notifications from "@/pages/Notifications";
 import Profile from "@/pages/Profile";
 import Premium from "@/pages/Premium";
+import Plan from "@/pages/Plan";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ function Router() {
         <Route path="/notifications" component={Notifications} />
         <Route path="/profile" component={Profile} />
         <Route path="/premium" component={Premium} />
+        <Route path="/plan" component={Plan} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

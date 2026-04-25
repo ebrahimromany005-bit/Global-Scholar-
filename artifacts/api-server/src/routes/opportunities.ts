@@ -9,6 +9,18 @@ import { and, asc, desc, eq, ilike, or, sql, gt } from "drizzle-orm";
 
 const router: IRouter = Router();
 
+function normalizeArabic(s: string): string {
+  return s
+    .replace(/[إأآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .trim();
+}
+
+const arNormSql = (col: unknown) =>
+  sql`regexp_replace(regexp_replace(regexp_replace(regexp_replace(${col}::text, '[إأآ]', 'ا', 'g'), 'ى', 'ي', 'g'), 'ة', 'ه', 'g'), '[\u064B-\u065F\u0670]', '', 'g')`;
+
 router.get("/opportunities", async (req, res) => {
   const params = ListOpportunitiesQueryParams.parse(req.query);
   const page = params.page ?? 1;
@@ -16,14 +28,19 @@ router.get("/opportunities", async (req, res) => {
 
   const conditions = [];
   if (params.q) {
+    const q = `%${params.q}%`;
+    const qNorm = `%${normalizeArabic(params.q)}%`;
     conditions.push(
       or(
-        ilike(opportunitiesTable.title, `%${params.q}%`),
-        ilike(opportunitiesTable.titleAr, `%${params.q}%`),
-        ilike(opportunitiesTable.organization, `%${params.q}%`),
-        ilike(opportunitiesTable.field, `%${params.q}%`),
-        ilike(opportunitiesTable.countryName, `%${params.q}%`),
-        ilike(opportunitiesTable.countryNameAr, `%${params.q}%`),
+        ilike(opportunitiesTable.title, q),
+        ilike(opportunitiesTable.titleAr, q),
+        ilike(opportunitiesTable.organization, q),
+        ilike(opportunitiesTable.field, q),
+        ilike(opportunitiesTable.countryName, q),
+        ilike(opportunitiesTable.countryNameAr, q),
+        sql`${arNormSql(opportunitiesTable.titleAr)} ilike ${qNorm}`,
+        sql`${arNormSql(opportunitiesTable.countryNameAr)} ilike ${qNorm}`,
+        sql`${arNormSql(opportunitiesTable.description)} ilike ${qNorm}`,
       ),
     );
   }

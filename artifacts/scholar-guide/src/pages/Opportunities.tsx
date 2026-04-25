@@ -105,12 +105,16 @@ export default function Opportunities() {
     const all = countries.data ?? [];
     return all
       .slice()
+      .filter((c) => {
+        if (type === "scholarship") return c.scholarshipCount > 0;
+        if (type === "migration") return c.migrationCount > 0;
+        return c.opportunityCount > 0;
+      })
       .sort((a, b) => {
         if (type === "scholarship") return b.scholarshipCount - a.scholarshipCount;
         if (type === "migration") return b.migrationCount - a.migrationCount;
         return b.opportunityCount - a.opportunityCount;
-      })
-      .slice(0, 10);
+      });
   }, [countries.data, type]);
 
   const headerTitle =
@@ -188,24 +192,29 @@ export default function Opportunities() {
         />
       </div>
 
-      {/* Suggested countries strip - changes per tab */}
+      {/* Suggested countries strip - changes per tab. Shows ALL countries with this type of opportunity */}
       {suggestedCountries.length > 0 && (
         <Card className="p-4 mb-6 bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
             <h3 className="font-bold text-sm flex items-center gap-2">
               <MapPin className="h-4 w-4 text-primary" />
               {type === "scholarship"
                 ? lang === "ar"
-                  ? "أفضل الدول للمنح الدراسية"
-                  : "Top countries for scholarships"
+                  ? `كل الدول للمنح الدراسية (${suggestedCountries.length})`
+                  : `All countries for scholarships (${suggestedCountries.length})`
                 : type === "migration"
                   ? lang === "ar"
-                    ? "أفضل الدول للهجرة"
-                    : "Top countries for migration"
+                    ? `كل الدول للهجرة (${suggestedCountries.length})`
+                    : `All countries for migration (${suggestedCountries.length})`
                   : lang === "ar"
-                    ? "أفضل الوجهات"
-                    : "Top destinations"}
+                    ? `كل الوجهات (${suggestedCountries.length})`
+                    : `All destinations (${suggestedCountries.length})`}
             </h3>
+            <Link href="/countries">
+              <Button variant="ghost" size="sm" className="text-primary text-xs h-7">
+                {lang === "ar" ? "صفحة كل الدول والأعلام ←" : "All countries & flags →"}
+              </Button>
+            </Link>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
             {suggestedCountries.map((c) => {
@@ -313,7 +322,7 @@ export default function Opportunities() {
                       {lang === "ar" ? "لم يتم العثور على دول" : "No countries found"}
                     </div>
                   )}
-                  {filteredCountries.slice(0, 30).map((c) => (
+                  {filteredCountries.map((c) => (
                     <button
                       key={c.code}
                       onClick={() => {
