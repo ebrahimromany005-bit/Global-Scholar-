@@ -162,18 +162,22 @@ export default function Plan() {
                   <Label className="mb-1.5 block">
                     {isAr ? "الدولة المستهدفة *" : "Target country *"}
                   </Label>
-                  <Select value={form.targetCountry} onValueChange={(v) => update("targetCountry", v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={isAr ? "اختر الدولة..." : "Select country..."} />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-72">
-                      {(countries.data?.items ?? []).map((c) => (
-                        <SelectItem key={c.code} value={c.code}>
-                          {c.flag} {isAr ? c.nameAr : c.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                 <input 
+  list="countries-list"
+  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+  placeholder={isAr ? "ابحث عن الدولة..." : "Search country..."}
+  onChange={(e) => {
+    const val = e.target.value;
+    const found = (countries.data?.items ?? []).find(c => (isAr ? c.nameAr : c.name) === val);
+    if (found) update("targetCountry", found.code);
+  }}
+/>
+<datalist id="countries-list">
+  {(countries.data?.items ?? []).map((c) => (
+    <option key={c.code} value={isAr ? c.nameAr : c.name} />
+  ))}
+</datalist>
+                    
                 </div>
 
                 <div>
