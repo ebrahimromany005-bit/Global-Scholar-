@@ -305,7 +305,7 @@ export default function Plan() {
 
               <Button
                 onClick={generate}
-                disabled={!isValid || loading}
+                disabled={ loading}
                 className="w-full h-12 text-base font-bold gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
               >
                 {loading ? (

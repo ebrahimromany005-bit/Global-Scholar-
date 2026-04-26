@@ -25,8 +25,11 @@ const queryClient = new QueryClient();
 function Router() {
   return (
     <Layout>
-      <Switch>
-        <Route path="/" component={Home} />
+  <div className="pb-40">
+    <Switch>
+    
+      
+        <Route path="/" component={Plan} />
         <Route path="/opportunities" component={Opportunities} />
         <Route path="/opportunities/:id" component={OpportunityDetail} />
         <Route path="/countries" component={Countries} />
@@ -41,8 +44,9 @@ function Router() {
         <Route path="/premium" component={Premium} />
         <Route path="/plan" component={Plan} />
         <Route component={NotFound} />
-      </Switch>
-    </Layout>
+</Switch>
+    </div>
+    </Layout>      
   );
 }
 
