@@ -29,7 +29,7 @@ function Router() {
     <Switch>
     
       
-        <Route path="/" component={Plan} />
+        <Route path="/" component={Home} />
         <Route path="/opportunities" component={Opportunities} />
         <Route path="/opportunities/:id" component={OpportunityDetail} />
         <Route path="/countries" component={Countries} />

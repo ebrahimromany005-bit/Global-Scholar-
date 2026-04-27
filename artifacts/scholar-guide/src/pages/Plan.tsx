@@ -90,33 +90,46 @@ export default function Plan() {
     form.languageLevel.trim() &&
     form.budget.trim();
 
-  async function generate() {
-    if (!isValid) return;
+    async function generate() {
+    if (!isValid) {
+      alert("البيانات ناقصة! لازم تختار: الدولة، مستوى التعليم، اللغة، والميزانية.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResult(null);
+
     try {
-      const apiBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/api`;
-      const res = await fetch(`${apiBase}/plan`, {
+      const res = await fetch('/api/plan', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+
+      // بنقرأ البيانات مرة واحدة بس هنا عشان الكود مايهنجش
+      const data = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.error || `HTTP ${res.status}`);
+        throw new Error(data.error || "حدث خطأ في السيرفر");
       }
-      const data: PlanResult = await res.json();
+
       setResult(data);
+
       setTimeout(() => {
-        document.getElementById("plan-result")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById('plan-result')?.scrollIntoView({
+          behavior: "smooth", 
+          block: "start"
+        });
       }, 100);
+
     } catch (e) {
       setError(e instanceof Error ? e.message : "خطأ غير متوقع");
     } finally {
       setLoading(false);
     }
-  }
+    }
+  
 
   function reset() {
     setResult(null);
