@@ -84,11 +84,8 @@ export default function Plan() {
 
   const update = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  const isValid =
-    form.targetCountry.trim() &&
-    form.educationLevel.trim() &&
-    form.languageLevel.trim() &&
-    form.budget.trim();
+  const isValid = true;
+  
 
     async function generate() {
     if (!isValid) {
