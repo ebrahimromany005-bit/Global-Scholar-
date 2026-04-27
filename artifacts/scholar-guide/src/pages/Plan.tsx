@@ -87,7 +87,9 @@ export default function Plan() {
   const isValid = true;
   
 
-    async function generate() {
+    async function generate(e) {
+      e.preventDefault();
+      
     if (!isValid) {
       alert("البيانات ناقصة! لازم تختار: الدولة، مستوى التعليم، اللغة، والميزانية.");
       return;
