@@ -318,7 +318,7 @@ const res = await fetch(`${apiBase}/plan`, {
                 </div>
               )}
 
-              {/*  <Button
+                <Button
   onClick={(e) => generate(e)}
   disabled={loading}
   type="button"
@@ -336,7 +336,7 @@ const res = await fetch(`${apiBase}/plan`, {
                     {isAr ? "أنشئ خطتي الذكية" : "Generate My Smart Plan"}
                   </>
                 )}
-              </Button>  */}
+              </Button>  
 
               <p className="text-xs text-muted-foreground text-center">
                 {isAr
@@ -347,7 +347,7 @@ const res = await fetch(`${apiBase}/plan`, {
           </Card>
         )}
 
-        {/*  {result && (
+          {result && (
           <div id="plan-result" className="space-y-6">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2">
@@ -365,7 +365,7 @@ const res = await fetch(`${apiBase}/plan`, {
                 <RefreshCw className="h-4 w-4" />
                 {isAr ? "خطة جديدة" : "New plan"}
               </Button>
-            </div>. */}
+            </div>. 
 
             <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-secondary/5">
               <CardContent className="pt-6">
