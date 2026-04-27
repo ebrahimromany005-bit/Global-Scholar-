@@ -98,8 +98,9 @@ export default function Plan() {
     setResult(null);
 
     try {
-      const apiBase = `${window.location.origin}/api`;
+      const apiBase = window.location.origin;
 const res = await fetch(`${apiBase}/plan`, {
+  
   
         method: "POST",
         headers: { "Content-Type": "application/json" },
