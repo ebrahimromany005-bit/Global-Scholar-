@@ -113,9 +113,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             </nav>
 
-            {/* Privacy & Contact Info */}
+            {/* Contact first, then Privacy */}
             <div className="mt-6 border-t pt-5 space-y-4">
               <div>
+                <p className="text-xs font-bold text-foreground mb-2 flex items-center gap-1.5">
+                  <span>✉️</span>
+                  {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
+                  {lang === 'ar'
+                    ? 'للاستفسار عن المنح أو محتوى الموقع راسلنا مباشرة:'
+                    : 'For inquiries about scholarships or site content:'}
+                </p>
+                <a
+                  href="mailto:romanye75@gmail.com"
+                  className="flex items-center gap-2 bg-primary text-primary-foreground rounded-lg px-3 py-2.5 hover:bg-primary/90 transition-colors"
+                >
+                  <span className="text-base">📧</span>
+                  <span className="text-xs font-bold break-all">romanye75@gmail.com</span>
+                </a>
+              </div>
+              <div className="border-t pt-4">
                 <p className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
                   <span>🔒</span>
                   {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
@@ -125,24 +143,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     ? 'في Global Scholar Guide، نولي أهمية قصوى لخصوصية زوارنا. نحن نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة المستخدم ولعرض إعلانات مخصصة عبر شركائنا مثل Google AdSense. لا نقوم بجمع بيانات شخصية دون موافقتك، وهدفنا هو توفير محتوى تعليمي مفيد وآمن.'
                     : 'At Global Scholar Guide, we prioritize your privacy. We use cookies to improve user experience and display personalized ads via partners like Google AdSense. We do not collect personal data without your consent.'}
                 </p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
-                  <span>✉️</span>
-                  {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}
-                </p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
-                  {lang === 'ar'
-                    ? 'إذا كان لديك أي استفسار بخصوص المنح الدراسية أو محتوى الموقع، لا تتردد في التواصل معنا:'
-                    : 'For any inquiries about scholarships or site content, feel free to reach out:'}
-                </p>
-                <a
-                  href="mailto:romanye75@gmail.com"
-                  className="flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-lg px-3 py-2 hover:bg-primary/20 transition-colors"
-                >
-                  <span className="text-base">📧</span>
-                  <span className="text-xs font-bold text-primary break-all">romanye75@gmail.com</span>
-                </a>
               </div>
             </div>
           </div>
