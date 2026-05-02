@@ -149,65 +149,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
         ))}
       </nav>
 
-      <footer className="bg-muted py-12 border-t mt-auto mb-16 md:mb-0">
+      <footer className="bg-muted border-t mt-auto mb-16 md:mb-0 py-6">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold mb-4">{t('platform')}</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/" className="hover:text-primary transition-colors">{t('home')}</Link></li>
-                <li><Link href="/about" className="hover:text-primary transition-colors">{t('about')}</Link></li>
-                <li><Link href="/premium" className="hover:text-primary transition-colors">{t('premium')}</Link></li>
-                <li><Link href="/about#contact" className="hover:text-primary transition-colors">{lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}</Link></li>
-                <li><Link href="/about#privacy" className="hover:text-primary transition-colors">{lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">{t('opportunities')}</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/opportunities?type=scholarship" className="hover:text-primary transition-colors">{t('scholarships')}</Link></li>
-                <li><Link href="/opportunities?type=migration" className="hover:text-primary transition-colors">{t('migration')}</Link></li>
-                <li><Link href="/countries" className="hover:text-primary transition-colors">{t('countries')}</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">{t('resources')}</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/blog" className="hover:text-primary transition-colors">{t('blog')}</Link></li>
-                <li><Link href="/learn" className="hover:text-primary transition-colors">{t('academy')}</Link></li>
-                <li><Link href="/documents" className="hover:text-primary transition-colors">{t('documents')}</Link></li>
-                <li><Link href="/calendar" className="hover:text-primary transition-colors">{t('calendar')}</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">{t('about')}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                {lang === 'ar'
-                  ? 'دليل المنح والهجرة العالمي — منصتك الموثوقة لاستكشاف الفرص حول العالم.'
-                  : 'Global Scholar & Migration Guide — your trusted platform to explore opportunities worldwide.'}
-              </p>
-            </div>
-          </div>
           <AdSlot slot="footer_banner" size="footer" />
-          <div className="pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground flex-wrap">
             <div className="flex items-center gap-2">
-              <Globe className="h-5 w-5 text-muted-foreground" />
-              <span className="font-bold text-muted-foreground">Scholar Guide</span>
+              <Globe className="h-4 w-4" />
+              <span className="font-bold">Scholar Guide</span>
+              <span>&copy; {new Date().getFullYear()}</span>
             </div>
-            <p className="text-sm text-muted-foreground text-center md:text-start">
-              &copy; {new Date().getFullYear()} {t('copyright')}
-            </p>
-            <div className="flex gap-4 text-xs text-muted-foreground">
-              <Link href="/about#privacy" className="hover:text-primary transition-colors">
-                {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
-              </Link>
-              <Link href="/about#terms" className="hover:text-primary transition-colors">
-                {lang === 'ar' ? 'شروط الاستخدام' : 'Terms of Use'}
-              </Link>
-              <Link href="/about#contact" className="hover:text-primary transition-colors">
-                {lang === 'ar' ? 'اتصل بنا' : 'Contact'}
-              </Link>
-            </div>
+            <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+              <Link href="/" className="hover:text-primary transition-colors">{t('home')}</Link>
+              <Link href="/opportunities" className="hover:text-primary transition-colors">{t('opportunities')}</Link>
+              <Link href="/countries" className="hover:text-primary transition-colors">{t('countries')}</Link>
+              <Link href="/blog" className="hover:text-primary transition-colors">{t('blog')}</Link>
+              <Link href="/about" className="hover:text-primary transition-colors">{t('about')}</Link>
+              <Link href="/contact" className="hover:text-primary transition-colors">{lang === 'ar' ? 'اتصل بنا' : 'Contact'}</Link>
+              <Link href="/privacy" className="hover:text-primary transition-colors">{lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy'}</Link>
+            </nav>
           </div>
         </div>
       </footer>

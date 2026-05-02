@@ -1,4 +1,4 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "postgresql-16"]
 
 [deployment]
 router = "application"
@@ -35,3 +35,6 @@ externalPort = 80
 
 [userenv.shared]
 GEMINI_API_KEY = "AIzaSyBQ0rwSmFqqTPl35OIyc7lDU2yHMe_Nb0U"
+
+[nix]
+channel = "stable-25_05"
