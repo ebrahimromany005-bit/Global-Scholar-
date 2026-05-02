@@ -21,7 +21,6 @@ import Premium from "@/pages/Premium";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import About from "@/pages/About";
-import Privacy from "@/pages/Privacy";
 import Contact from "@/pages/Contact";
 
 const queryClient = new QueryClient();
@@ -47,7 +46,6 @@ function Router() {
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:slug" component={BlogPost} />
           <Route path="/about" component={About} />
-          <Route path="/privacy" component={Privacy} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

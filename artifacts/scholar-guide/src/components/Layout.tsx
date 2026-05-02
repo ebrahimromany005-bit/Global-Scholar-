@@ -112,6 +112,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </Link>
             </nav>
+
+            {/* Privacy & Contact Info */}
+            <div className="mt-6 border-t pt-5 space-y-4">
+              <div>
+                <p className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+                  <span>🔒</span>
+                  {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {lang === 'ar'
+                    ? 'في Global Scholar Guide، نولي أهمية قصوى لخصوصية زوارنا. نحن نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة المستخدم ولعرض إعلانات مخصصة عبر شركائنا مثل Google AdSense. لا نقوم بجمع بيانات شخصية دون موافقتك، وهدفنا هو توفير محتوى تعليمي مفيد وآمن.'
+                    : 'At Global Scholar Guide, we prioritize your privacy. We use cookies to improve user experience and display personalized ads via partners like Google AdSense. We do not collect personal data without your consent.'}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+                  <span>✉️</span>
+                  {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {lang === 'ar'
+                    ? 'إذا كان لديك أي استفسار بخصوص المنح الدراسية أو محتوى الموقع، لا تتردد في التواصل معنا:'
+                    : 'For any inquiries about scholarships or site content, feel free to reach out:'}
+                </p>
+                <a href="mailto:romanye75@gmail.com" className="text-[11px] text-primary font-semibold hover:underline block mt-1">
+                  romanye75@gmail.com
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -165,7 +194,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/blog" className="hover:text-primary transition-colors">{t('blog')}</Link>
               <Link href="/about" className="hover:text-primary transition-colors">{t('about')}</Link>
               <Link href="/contact" className="hover:text-primary transition-colors">{lang === 'ar' ? 'اتصل بنا' : 'Contact'}</Link>
-              <Link href="/privacy" className="hover:text-primary transition-colors">{lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy'}</Link>
             </nav>
           </div>
         </div>
