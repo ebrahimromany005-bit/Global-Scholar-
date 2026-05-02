@@ -131,13 +131,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <span>✉️</span>
                   {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}
                 </p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
                   {lang === 'ar'
                     ? 'إذا كان لديك أي استفسار بخصوص المنح الدراسية أو محتوى الموقع، لا تتردد في التواصل معنا:'
                     : 'For any inquiries about scholarships or site content, feel free to reach out:'}
                 </p>
-                <a href="mailto:romanye75@gmail.com" className="text-[11px] text-primary font-semibold hover:underline block mt-1">
-                  romanye75@gmail.com
+                <a
+                  href="mailto:romanye75@gmail.com"
+                  className="flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-lg px-3 py-2 hover:bg-primary/20 transition-colors"
+                >
+                  <span className="text-base">📧</span>
+                  <span className="text-xs font-bold text-primary break-all">romanye75@gmail.com</span>
                 </a>
               </div>
             </div>
