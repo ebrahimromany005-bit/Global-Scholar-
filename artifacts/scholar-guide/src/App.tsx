@@ -18,35 +18,37 @@ import Assistant from "@/pages/Assistant";
 import Notifications from "@/pages/Notifications";
 import Profile from "@/pages/Profile";
 import Premium from "@/pages/Premium";
-import Plan from "@/pages/Plan";
+import Blog from "@/pages/Blog";
+import BlogPost from "@/pages/BlogPost";
+import About from "@/pages/About";
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
     <Layout>
-  <div className="pb-40">
-    <Switch>
-    
-      
-        <Route path="/" component={Home} />
-        <Route path="/opportunities" component={Opportunities} />
-        <Route path="/opportunities/:id" component={OpportunityDetail} />
-        <Route path="/countries" component={Countries} />
-        <Route path="/countries/:code" component={CountryDetail} />
-        <Route path="/applications" component={Applications} />
-        <Route path="/documents" component={Documents} />
-        <Route path="/learn" component={Learn} />
-        <Route path="/calendar" component={CalendarPage} />
-        <Route path="/assistant" component={Assistant} />
-        <Route path="/notifications" component={Notifications} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/premium" component={Premium} />
-        <Route path="/plan" component={Plan} />
-        <Route component={NotFound} />
-</Switch>
-    </div>
-    </Layout>      
+      <div className="pb-40">
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/opportunities" component={Opportunities} />
+          <Route path="/opportunities/:id" component={OpportunityDetail} />
+          <Route path="/countries" component={Countries} />
+          <Route path="/countries/:code" component={CountryDetail} />
+          <Route path="/applications" component={Applications} />
+          <Route path="/documents" component={Documents} />
+          <Route path="/learn" component={Learn} />
+          <Route path="/calendar" component={CalendarPage} />
+          <Route path="/assistant" component={Assistant} />
+          <Route path="/notifications" component={Notifications} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/premium" component={Premium} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/blog/:slug" component={BlogPost} />
+          <Route path="/about" component={About} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+    </Layout>
   );
 }
 

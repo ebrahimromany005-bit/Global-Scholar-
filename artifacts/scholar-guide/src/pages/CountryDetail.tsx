@@ -14,7 +14,6 @@ import {
   MapPin,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   LayoutGrid,
 } from "lucide-react";
 
@@ -98,27 +97,6 @@ export default function CountryDetail() {
           </Card>
         </div>
 
-        <Card className="p-4 mb-6 border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-secondary/5">
-          <div className="flex items-start md:items-center gap-3 flex-col md:flex-row">
-            <Sparkles className="h-6 w-6 text-primary shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold text-base mb-1">
-                {isAr ? "خطة سفر ذكية مخصصة لك" : "A smart plan tailored to you"}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {isAr
-                  ? `احصل على خطة شخصية كاملة للسفر إلى ${c.nameAr}: مسار، تكلفة، خطوات، ونسبة نجاح.`
-                  : `Get a personalized plan for ${c.name}: path, costs, steps, and success rate.`}
-              </p>
-            </div>
-            <Link href={`/plan?country=${c.code}`}>
-              <Button className="gap-2 bg-gradient-to-r from-primary to-secondary">
-                <Sparkles className="h-4 w-4" />
-                {isAr ? "أنشئ خطتي" : "Build my plan"}
-              </Button>
-            </Link>
-          </div>
-        </Card>
 
         <h2 className="text-2xl font-bold mb-4">
           {isAr ? `الفرص في ${c.nameAr}` : `Opportunities in ${c.name}`}

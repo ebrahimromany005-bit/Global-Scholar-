@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'wouter';
 import { useLang } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
-import { Globe, Search, Home, LayoutList, Map, MessageSquare, Menu, X, BookOpen, Crown, FileText, Bell, User, Sparkles } from 'lucide-react';
+import { Globe, Search, Home, LayoutList, Map, MessageSquare, Menu, X, BookOpen, Crown, FileText, Bell, User, Newspaper } from 'lucide-react';
 import { useState } from 'react';
 import { AdSlot } from './AdSlot';
 
@@ -16,7 +16,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: '/', label: t('home'), icon: Home },
     { href: '/opportunities', label: t('opportunities'), icon: Search },
     { href: '/countries', label: t('countries'), icon: Map },
-    { href: '/plan', label: t('smart_plan'), icon: Sparkles, highlight: true },
+    { href: '/blog', label: t('blog'), icon: Newspaper },
     { href: '/applications', label: t('tracker'), icon: LayoutList },
     { href: '/documents', label: t('documents'), icon: FileText },
     { href: '/learn', label: t('academy'), icon: BookOpen },
@@ -42,18 +42,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <nav className="hidden md:flex items-center gap-1 mx-6">
             {navLinks.map(link => {
-              const isActive = location === link.href;
-              const baseCls = 'text-sm font-medium gap-1.5';
-              const cls = link.highlight
-                ? `${baseCls} ${isActive ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground' : 'text-primary border border-primary/30 hover:bg-primary/10'}`
-                : `${baseCls} ${isActive ? 'bg-secondary/20 text-secondary' : 'text-muted-foreground'}`;
+              const isActive = location === link.href || (link.href === '/blog' && location.startsWith('/blog'));
+              const cls = `text-sm font-medium gap-1.5 ${isActive ? 'bg-secondary/20 text-secondary' : 'text-muted-foreground'}`;
               return (
                 <Link key={link.href} href={link.href}>
                   <Button
-                    variant={isActive && !link.highlight ? 'secondary' : 'ghost'}
+                    variant={isActive ? 'secondary' : 'ghost'}
                     className={cls}
                   >
-                    {link.highlight && <link.icon className="h-3.5 w-3.5" />}
                     {link.label}
                   </Button>
                 </Link>
@@ -109,6 +105,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   {t('premium')}
                 </div>
               </Link>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted">
+                  <Globe className="h-5 w-5" />
+                  {t('about')}
+                </div>
+              </Link>
             </nav>
           </div>
         </div>
@@ -134,12 +136,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {[
           { href: '/', icon: Home, label: t('home') },
           { href: '/opportunities', icon: Search, label: t('opportunities') },
-          { href: '/plan', icon: Sparkles, label: t('smart_plan') },
+          { href: '/blog', icon: Newspaper, label: t('blog') },
           { href: '/applications', icon: LayoutList, label: t('tracker') },
           { href: '/profile', icon: User, label: t('profile') },
         ].map(item => (
           <Link key={item.href} href={item.href}>
-            <div className={`flex flex-col items-center justify-center w-16 h-full gap-1 ${location === item.href ? 'text-primary' : 'text-muted-foreground'}`}>
+            <div className={`flex flex-col items-center justify-center w-16 h-full gap-1 ${location === item.href || (item.href === '/blog' && location.startsWith('/blog')) ? 'text-primary' : 'text-muted-foreground'}`}>
               <item.icon className={`h-5 w-5 ${location === item.href ? 'fill-primary/20' : ''}`} />
               <span className="text-[10px] font-medium">{item.label}</span>
             </div>
@@ -156,6 +158,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link href="/" className="hover:text-primary transition-colors">{t('home')}</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">{t('about')}</Link></li>
                 <li><Link href="/premium" className="hover:text-primary transition-colors">{t('premium')}</Link></li>
+                <li><Link href="/about#contact" className="hover:text-primary transition-colors">{lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}</Link></li>
+                <li><Link href="/about#privacy" className="hover:text-primary transition-colors">{lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link></li>
               </ul>
             </div>
             <div>
@@ -169,6 +173,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h3 className="font-bold mb-4">{t('resources')}</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/blog" className="hover:text-primary transition-colors">{t('blog')}</Link></li>
                 <li><Link href="/learn" className="hover:text-primary transition-colors">{t('academy')}</Link></li>
                 <li><Link href="/documents" className="hover:text-primary transition-colors">{t('documents')}</Link></li>
                 <li><Link href="/calendar" className="hover:text-primary transition-colors">{t('calendar')}</Link></li>
@@ -176,8 +181,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <h3 className="font-bold mb-4">{t('about')}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                دليل المنح والهجرة العالمي هو منصتك الموثوقة لاستكشاف الفرص حول العالم.
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                {lang === 'ar'
+                  ? 'دليل المنح والهجرة العالمي — منصتك الموثوقة لاستكشاف الفرص حول العالم.'
+                  : 'Global Scholar & Migration Guide — your trusted platform to explore opportunities worldwide.'}
               </p>
             </div>
           </div>
@@ -187,9 +194,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Globe className="h-5 w-5 text-muted-foreground" />
               <span className="font-bold text-muted-foreground">Scholar Guide</span>
             </div>
-            <p className="text-sm text-muted-foreground text-center md:text-left">
+            <p className="text-sm text-muted-foreground text-center md:text-start">
               &copy; {new Date().getFullYear()} {t('copyright')}
             </p>
+            <div className="flex gap-4 text-xs text-muted-foreground">
+              <Link href="/about#privacy" className="hover:text-primary transition-colors">
+                {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+              </Link>
+              <Link href="/about#terms" className="hover:text-primary transition-colors">
+                {lang === 'ar' ? 'شروط الاستخدام' : 'Terms of Use'}
+              </Link>
+              <Link href="/about#contact" className="hover:text-primary transition-colors">
+                {lang === 'ar' ? 'اتصل بنا' : 'Contact'}
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

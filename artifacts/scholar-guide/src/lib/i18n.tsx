@@ -57,7 +57,7 @@ const translations = {
     ai_review: 'مراجعة بالذكاء الاصطناعي',
     premium_only: 'متاح في النسخة المدفوعة',
     recent_alerts: 'أحدث الإشعارات',
-    smart_plan: 'خطة السفر',
+    blog: 'المقالات',
   },
   en: {
     home: 'Home',
@@ -113,7 +113,7 @@ const translations = {
     ai_review: 'AI Review',
     premium_only: 'Premium Only',
     recent_alerts: 'Recent Alerts',
-    smart_plan: 'Smart Plan',
+    blog: 'Articles',
   }
 };
 
